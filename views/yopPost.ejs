@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Voila!</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/d3js/5.15.1/d3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+
+
+
+<div class="container-fluid  heading ">
+
+  <img class="logo" src="images/magicwand.png" alt="magic wand" />
+  <h1> Voila ! </h1>
+
+
+  <p class="other-text">
+  </p>
+
+</div>
+
+<div class= "infoo">
+  <p class= "before-info">
+  Name : Michael Akinlosotu <br />
+  Weight : 220lbs <br>
+  BMI: 17%
+
+
+  <div class="container-fluid b1">
+      <img class="bf front" src= "<%= photos[0] %>" alt="Before Front Picture" />
+      <img class="after-front" src= "<%= photos[1] %>"  alt="After Front Picture" />
+  </div>
+
+  <div class="container-fluid b1 b-l-side second">
+      <img class="bf l-side" src="<%= photos[2] %>" alt="Before Side Picture" />
+      <img class="after-side" src="<%= photos[3] %>" alt="After Side Picture" />
+  </div>
+
+  <div class="container-fluid b1 b-r-side third first">
+      <img class="bf r-side" src="<%= photos[4] %>" alt="Before Side 2 Picture" />
+      <img class="after-side2" src="<%= photos[5] %>" alt="After Side 2 Picture" />
+  </div>
+
+  <div class="container-fluid b1 b-back fourth second">
+      <img class="bf back" src="<%= photos[6] %>" alt="Before Back Picture" />
+      <img class="after-back" src="<%= photos[7] %>" alt="After Back Picture" />
+  </div>
+
+
+
+
+  </p>
+</div>
+
+
+
+
+
+<script type=" text/javascript" src="/javascripts/voila.js"> </script>
+  </body>
+</html>

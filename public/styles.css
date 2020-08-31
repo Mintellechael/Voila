@@ -1,0 +1,88 @@
+body {
+  background-color: black;
+}
+h1 {
+color : white;
+font-size: 5rem;
+text-align: center;
+padding: 10px 0;
+font-family: 'Lobster', cursive;
+display: inline-block;
+}
+
+h2 {
+  color : white;
+}
+
+.infoo {
+  position: sticky;
+  top : 0;
+}
+.before-info {
+
+  position: absolute;
+  left : 100px;
+  color : white;
+}
+
+.logo {
+  width : 70px;
+  height : 70px;
+  display : inline-block;
+  position: relative;
+  bottom: 25px;
+}
+.bf {
+  width : 30%;
+  height :  30%;
+  border-radius : 8px;
+}
+
+.bf:hover {
+  opacity: 0.2;
+}
+
+.b1 {
+  position: relative;
+  left : 30%;
+  padding-bottom : 50px;
+  padding-top : 20px;
+
+}
+
+.heading {
+  text-align : center;
+  color : white;
+  font-size : 1.5rem;
+  padding-bottom : 50px;
+}
+
+.other-text {
+  font-family: 'Abril Fatface', cursive;
+}
+
+.before-heading {
+  position: absolute;
+  left: 100px;
+}
+
+.after-heading {
+  position: absolute;
+  right: 100px;
+
+}
+
+.a1 {
+  position: relative;
+  left : 60%;
+  padding-bottom : 50px;
+  padding-top : 20px;
+}
+
+.after-front, .after-side, .after-side2 , .after-back {
+  visibility: hidden;
+  width : 30%;
+  height : 30%;
+  transform : rotate(360deg);
+  border-radius: 8px;
+}
