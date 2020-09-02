@@ -32,7 +32,7 @@ api_secret: process.env.API_SECRET
 
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/testdb", {
+mongoose.connect("mongodb://localhost:27017/testVoiladb", {
   useNewUrlParser: "true",
 });
 mongoose.connection.on("error", err => {
@@ -51,20 +51,6 @@ const Mongoose = require("mongoose")
 
 // --------------------------------------------------------------------
 
-
-const userSchema = new Mongoose.Schema({
-  username : String,
-  email: String,
-  password: String
-  },
-);
-
-const User = mongoose.model("User", userSchema);
-
-var bob = new User({username:"bobby2Times", email:"bob@gmail.com", password:"bobsecret"});
-bob.save();
-
-
 var weight = 220 * 0.453592;
 var height = Math.pow(6 * 0.3048, 2);
 var bmi = weight / height;
@@ -76,6 +62,7 @@ module.exports = photos;
 
 const voilaUserSchema = new mongoose.Schema ({
 name : String,
+password : String,
 weight : Number,
 height : Number,
 beforePics : {front: String , left : String , right: String, back : String},
@@ -84,12 +71,62 @@ afterPics : {front: String , left : String , right: String, back : String}
 
 const VoilaUser = new mongoose.model("VoilaUser", voilaUserSchema);
 
+const selah = new VoilaUser ({
+  name : "selah",
+  password: "selahlovesmelo",
+  weight : 180,
+  height: 5.2,
+  beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+  afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
+});
+
+
+
 
 app.get("/",(req,res) => {
   var drinks = "blueberry faygo";
 res.render('yop' , {drinks: drinks , photos:photos});
 });
 
+app.get("/login",(req,res) => {
+res.render('login');
+});
+
+app.get("/register",(req,res) => {
+res.render('register');
+});
+
+app.post("/register", (req,res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+
+  VoilaUser.find({ name: "selah", password: "selahlovesmelo"}, function (err, docs) {
+    if (err) {
+      console.log(err);
+    }
+    else if (docs[0].password === password){
+      console.log("you already have an account!");
+      res.render('login');
+    }
+    else {
+      const user = new VoilaUser ({
+        name : username,
+        password: password,
+        weight : 300,
+        height: 5.2,
+        beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+        afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
+      });
+
+      user.save();
+
+      console.log(docs)
+      console.log("you've been successfully registered!");
+      res.render('login');
+    }
+
+  });
+  });
 
 
 
@@ -111,15 +148,16 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
 
 if (photos.length === 8) {
 
-  const selah = new VoilaUser ({
-    name : "selah",
-    weight : 180,
-    height: 5.2,
-    beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-    afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
-  });
-
-  selah.save();
+  // const selah = new VoilaUser ({
+  //   name : "selah",
+  //   password: "selahlovesmelo",
+  //   weight : 180,
+  //   height: 5.2,
+  //   beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+  //   afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
+  // });
+  //
+  // selah.save();
 
   res.render('yopPost', {photos:photos});
 
