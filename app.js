@@ -17,10 +17,9 @@ const path = require('path');
 app.use(express.static(path.join(__dirname,"public")));
 app.use(fileUpload({useTempFiles : true,
     tempFileDir : '/tmp/'}));
-app.use(bodyParser.urlencoded({ extended: false}))
-app.use(bodyParser.json());
 app.set('view engine', 'ejs');
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}))
 
 const cloudinary = require("cloudinary").v2;
 
@@ -33,7 +32,7 @@ api_secret: process.env.API_SECRET
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/testVoiladb", {
-  useNewUrlParser: "true",
+  useNewUrlParser: "true", useUnifiedTopology: true
 });
 mongoose.connection.on("error", err => {
   console.log("err", err)
@@ -51,22 +50,24 @@ const Mongoose = require("mongoose")
 
 // --------------------------------------------------------------------
 
-var weight = 220 * 0.453592;
-var height = Math.pow(6 * 0.3048, 2);
-var bmi = weight / height;
+
 
 // ----------------------------------------------------------------------
 var photos = [];
+var userName1 = "";
 module.exports = photos;
 
 
 const voilaUserSchema = new mongoose.Schema ({
-name : String,
-password : String,
-weight : Number,
-height : Number,
-beforePics : {front: String , left : String , right: String, back : String},
-afterPics : {front: String , left : String , right: String, back : String}
+  username : String,
+  password: String,
+  firstName : String,
+  lastName : String,
+  weight : Number,
+  height: Number,
+  bmi: Number,
+  beforePics : {front: String , left : String , right: String, back : String},
+  afterPics : {front: String , left : String , right: String, back : String}
 });
 
 const VoilaUser = new mongoose.model("VoilaUser", voilaUserSchema);
@@ -92,6 +93,30 @@ app.get("/login",(req,res) => {
 res.render('login');
 });
 
+app.post("/login", (req,res) => {
+
+var username = req.body.username;
+var password = req.body.password;
+
+VoilaUser.find({ username : username}, function (err, docs) {
+
+     if (err) {
+     console.log(err)
+     }
+
+     else if (docs[0].password === password) {
+       console.log(docs);
+       res.render('yop', {username: docs[0].username} );
+
+     }
+     else {
+       console.log("password or username is incorrect!")
+     }
+});
+
+
+});
+
 app.get("/register",(req,res) => {
 res.render('register');
 });
@@ -99,29 +124,39 @@ res.render('register');
 app.post("/register", (req,res) => {
   var username = req.body.username;
   var password = req.body.password;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var weight = req.body.weight;
+  var height = req.body.height;
 
-  VoilaUser.find({ name: "selah", password: "selahlovesmelo"}, function (err, docs) {
+  var bmiWeight = weight * 0.453592;
+  var bmiHeight = Math.pow(height * 0.3048, 2);
+  var bmi = bmiWeight / bmiHeight;
+
+  VoilaUser.find({ username: username}, function (err, docs) {
     if (err) {
       console.log(err);
     }
-    else if (docs[0].password === password){
-      console.log("you already have an account!");
-      res.render('login');
-    }
-    else {
+    else if (docs.length === 0) {
+
       const user = new VoilaUser ({
-        name : username,
+        username : username,
         password: password,
-        weight : 300,
-        height: 5.2,
-        beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-        afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
+        firstName : firstName,
+        lastName : lastName,
+        weight : weight,
+        height: height,
+        bmi: bmi
       });
 
       user.save();
 
-      console.log(docs)
       console.log("you've been successfully registered!");
+      res.render('login');
+    }
+
+    else {
+      console.log("you already have an account!");
       res.render('login');
     }
 
@@ -131,6 +166,8 @@ app.post("/register", (req,res) => {
 
 
 app.post('/upload',(req, res, next) => {
+var username = req.body.username;
+
 const file = req.files.image;
 console.log(file);
 
@@ -148,16 +185,22 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
 
 if (photos.length === 8) {
 
-  // const selah = new VoilaUser ({
-  //   name : "selah",
-  //   password: "selahlovesmelo",
-  //   weight : 180,
-  //   height: 5.2,
-  //   beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-  //   afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
-  // });
-  //
-  // selah.save();
+  VoilaUser.fineOneAndUpdate({username: username},
+  {beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+   afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}},
+   function (err,doc) {
+     if (err){
+       console.log(err);
+     }
+     else {
+       console.log("update successful!");
+       console.log(doc);
+     }
+   });
+
+
+
+
 
   res.render('yopPost', {photos:photos});
 

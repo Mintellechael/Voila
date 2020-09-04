@@ -14,7 +14,6 @@
   <body>
 
 
-  <p>  <%= drinks %>  </p>
 
 <div class="container-fluid  heading ">
 
@@ -38,6 +37,7 @@
 
 <form action='/upload' id="cloudUpload" method="post" enctype="multipart/form-data">
  <input type='file' name='image' />
+ <input type="hidden" name="username" value=""
  <input id="submitButton" type="submit" value="submit" />
 </form>
 
