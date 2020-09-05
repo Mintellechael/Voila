@@ -32,8 +32,10 @@ api_secret: process.env.API_SECRET
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/testVoiladb", {
-  useNewUrlParser: "true", useUnifiedTopology: true
-});
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false });
+
 mongoose.connection.on("error", err => {
   console.log("err", err)
 });
@@ -85,8 +87,6 @@ const selah = new VoilaUser ({
 
 
 app.get("/",(req,res) => {
-  var drinks = "blueberry faygo";
-res.render('yop' , {drinks: drinks , photos:photos});
 });
 
 app.get("/login",(req,res) => {
@@ -185,14 +185,15 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
 
 if (photos.length === 8) {
 
-  VoilaUser.fineOneAndUpdate({username: username},
-  {beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-   afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}},
+  VoilaUser.findOneAndUpdate({username: username},
+  { $set: { beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+   afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}}},
    function (err,doc) {
      if (err){
        console.log(err);
      }
      else {
+       console.log(username);
        console.log("update successful!");
        console.log(doc);
      }
