@@ -7,8 +7,6 @@ const fs = require('fs');
 const ejs = require("ejs");
 
 
-
-
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -46,6 +44,36 @@ mongoose.connection.on("connected", (err, res) => {
 const Mongoose = require("mongoose")
 
 
+var crypto = require("crypto");
+var genRandomString = function(length){
+  return crypto.randomBytes(Math.ceil(length/2)).toString("hex").slice(0,length);
+}
+var sha512 = function(password,salt){
+  var hash = crypto.createHmac("sha512", salt);
+  hash.update(password);
+  var value = hash.digest('hex');
+  return {
+    salt:salt,
+    passwordHash:value
+  };
+};
+
+function saltHashPassword(userpassword) {
+    var salt = genRandomString(16); /** Gives us salt of length 16 */
+    var passwordData = sha512(userpassword, salt);
+    console.log('UserPassword = '+userpassword);
+    console.log('Passwordhash = '+passwordData.passwordHash);
+    console.log('nSalt = '+passwordData.salt);
+    return [passwordData.passwordHash, passwordData.salt];
+}
+
+function validatePassword(userpassword,salt) {
+  var passwordData = sha512(userpassword, salt);
+  return passwordData.passwordHash;
+}
+
+
+
 
 
 
@@ -63,6 +91,7 @@ module.exports = photos;
 const voilaUserSchema = new mongoose.Schema ({
   username : String,
   password: String,
+  salt: String,
   firstName : String,
   lastName : String,
   weight : Number,
@@ -87,6 +116,7 @@ const selah = new VoilaUser ({
 
 
 app.get("/",(req,res) => {
+  res.render('login');
 });
 
 app.get("/login",(req,res) => {
@@ -104,9 +134,35 @@ VoilaUser.find({ username : username}, function (err, docs) {
      console.log(err)
      }
 
-     else if (docs[0].password === password) {
-       console.log(docs);
-       res.render('yop', {username: docs[0].username} );
+     else if (docs[0].username === username) {
+           if (validatePassword(password,docs[0].salt) === docs[0].password) {
+                 if (docs[0].beforePics.front != undefined) {
+                   var beforeFront = docs[0].beforePics.front ;
+                   var beforeLeft = docs[0].beforePics.left ;
+                   var beforeRight = docs[0].beforePics.right ;
+                   var beforeBack = docs[0].beforePics.back ;
+
+                   var afterFront = docs[0].afterPics.front ;
+                   var afterLeft = docs[0].afterPics.left ;
+                   var afterRight = docs[0].afterPics.right ;
+                   var afterBack = docs[0].afterPics.back;
+
+                   res.render('loginPost', {
+                     beforeFront:beforeFront,
+                     beforeLeft:beforeLeft,
+                     beforeRight:beforeRight,
+                     beforeBack:beforeBack,
+                     afterFront:afterFront,
+                     afterLeft:afterLeft,
+                     afterRight:afterRight,
+                     afterBack:afterBack
+                      });
+                 }
+                 else {
+                 console.log(docs);
+                 res.render('yop', {username: docs[0].username} );
+               }
+             }
 
      }
      else {
@@ -122,12 +178,14 @@ res.render('register');
 });
 
 app.post("/register", (req,res) => {
+  var hashAndSaltPass = saltHashPassword(req.body.password);
   var username = req.body.username;
-  var password = req.body.password;
+  var password = hashAndSaltPass[0];
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
   var weight = req.body.weight;
   var height = req.body.height;
+  var salt = hashAndSaltPass[1];
 
   var bmiWeight = weight * 0.453592;
   var bmiHeight = Math.pow(height * 0.3048, 2);
@@ -142,6 +200,7 @@ app.post("/register", (req,res) => {
       const user = new VoilaUser ({
         username : username,
         password: password,
+        salt: salt,
         firstName : firstName,
         lastName : lastName,
         weight : weight,
