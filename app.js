@@ -6,6 +6,9 @@ const bodyParser = require("body-parser");
 const fs = require('fs');
 const ejs = require("ejs");
 
+const Swal = require('sweetalert2')
+
+
 
 const express = require("express");
 const app = express();
@@ -27,7 +30,7 @@ api_key: process.env.API_KEY,
 api_secret: process.env.API_SECRET
 });
 
-
+// Mongoose Setup
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/testVoiladb", {
   useNewUrlParser: true,
@@ -43,7 +46,7 @@ mongoose.connection.on("connected", (err, res) => {
 
 const Mongoose = require("mongoose")
 
-
+// Password Salt and Hash Requirements
 var crypto = require("crypto");
 var genRandomString = function(length){
   return crypto.randomBytes(Math.ceil(length/2)).toString("hex").slice(0,length);
@@ -82,12 +85,10 @@ function validatePassword(userpassword,salt) {
 
 
 
-// ----------------------------------------------------------------------
 var photos = [];
-var userName1 = "";
-module.exports = photos;
+var wrongPassword = false;
 
-
+// Database Setup --------------------------------------------------------------
 const voilaUserSchema = new mongoose.Schema ({
   username : String,
   password: String,
@@ -101,26 +102,30 @@ const voilaUserSchema = new mongoose.Schema ({
   afterPics : {front: String , left : String , right: String, back : String}
 });
 
+
 const VoilaUser = new mongoose.model("VoilaUser", voilaUserSchema);
 
-const selah = new VoilaUser ({
-  name : "selah",
-  password: "selahlovesmelo",
-  weight : 180,
-  height: 5.2,
-  beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-  afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
-});
 
 
+// Routes ----------------------------------------------------------------------
 
+
+// INDEX
 
 app.get("/",(req,res) => {
   res.render('login');
 });
 
+// LOGIN PAGE
+
 app.get("/login",(req,res) => {
 res.render('login');
+});
+
+// REGISTER PAGE
+
+app.get("/register",(req,res) => {
+res.render('register');
 });
 
 app.post("/login", (req,res) => {
@@ -128,6 +133,7 @@ app.post("/login", (req,res) => {
 var username = req.body.username;
 var password = req.body.password;
 
+// Check Database To See If User Exists
 VoilaUser.find({ username : username}, function (err, docs) {
 
      if (err) {
@@ -163,19 +169,17 @@ VoilaUser.find({ username : username}, function (err, docs) {
                  res.render('yop', {username: docs[0].username} );
                }
              }
-
-     }
      else {
-       console.log("password or username is incorrect!")
+       var error =  "password is incorrect";
+       res.render('loginError', {error:error});
+       console.log("Password is incorrect!!!");
      }
+   }
+});
 });
 
 
-});
-
-app.get("/register",(req,res) => {
-res.render('register');
-});
+// POST TO REGISTER PAGE
 
 app.post("/register", (req,res) => {
   var hashAndSaltPass = saltHashPassword(req.body.password);
@@ -190,6 +194,9 @@ app.post("/register", (req,res) => {
   var bmiWeight = weight * 0.453592;
   var bmiHeight = Math.pow(height * 0.3048, 2);
   var bmi = bmiWeight / bmiHeight;
+
+
+  // Adds user to database if they dont already exists
 
   VoilaUser.find({ username: username}, function (err, docs) {
     if (err) {
@@ -209,21 +216,22 @@ app.post("/register", (req,res) => {
       });
 
       user.save();
-
-      console.log("you've been successfully registered!");
-      res.render('login');
+      var message = "you've been successfully registered!";
+      console.log("you've been successfully registered! Login!");
+      res.render('loginSuccess', {message:message });
     }
 
     else {
+      var message = "you already have an account! Login!";
       console.log("you already have an account!");
-      res.render('login');
+      res.render('loginSuccess', {message:message });
     }
 
   });
   });
 
 
-
+// Code for user uploading their before and after pics
 app.post('/upload',(req, res, next) => {
 var username = req.body.username;
 
@@ -237,35 +245,38 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
 
  photos.push(result.url);
  console.log(photos);
- console.log("Array size " + photos.length )
+ console.log("Array size " + photos.length)
 
+ if (photos.length === 8) {
+
+
+// Adds uploaded photos to users account in database
+   VoilaUser.findOneAndUpdate({username: username},
+   { $set: { beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+    afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}}},
+    function (err,doc) {
+      if (err){
+        console.log(err);
+      }
+      else {
+        console.log(username);
+        console.log("update successful!");
+        console.log(doc);
+      }
+    });
+
+
+
+
+
+   res.render('yopPost', {photos:photos});
+
+
+ }
 
 });
 
-if (photos.length === 8) {
 
-  VoilaUser.findOneAndUpdate({username: username},
-  { $set: { beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-   afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}}},
-   function (err,doc) {
-     if (err){
-       console.log(err);
-     }
-     else {
-       console.log(username);
-       console.log("update successful!");
-       console.log(doc);
-     }
-   });
-
-
-
-
-
-  res.render('yopPost', {photos:photos});
-
-
-}
 
 
 });

@@ -1,6 +1,7 @@
 
 var picCount = 0;
 
+
 $("#submitButton").click(function() {
 
   picCount ++;
