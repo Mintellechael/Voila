@@ -1,20 +1,17 @@
 require("dotenv").config();
 
+// Package Requirements
 const fileUpload = require("express-fileupload");
-
 const bodyParser = require("body-parser");
 const fs = require('fs');
 const ejs = require("ejs");
-
-const Swal = require('sweetalert2')
-
-
 
 const express = require("express");
 const app = express();
 const port = 3000;
 const path = require('path');
 
+// Set up Express, EJS , bodyParser
 app.use(express.static(path.join(__dirname,"public")));
 app.use(fileUpload({useTempFiles : true,
     tempFileDir : '/tmp/'}));
@@ -22,6 +19,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}))
 
+// Cloud api setup for users pictures
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -83,10 +81,8 @@ function validatePassword(userpassword,salt) {
 
 // --------------------------------------------------------------------
 
-
-
 var photos = [];
-var wrongPassword = false;
+
 
 // Database Setup --------------------------------------------------------------
 const voilaUserSchema = new mongoose.Schema ({
@@ -95,9 +91,12 @@ const voilaUserSchema = new mongoose.Schema ({
   salt: String,
   firstName : String,
   lastName : String,
-  weight : Number,
+  beforeWeight : Number,
+  afterWeight : Number,
+  secrets : String,
   height: Number,
-  bmi: Number,
+  beforeBmi: Number,
+  afterBmi: Number,
   beforePics : {front: String , left : String , right: String, back : String},
   afterPics : {front: String , left : String , right: String, back : String}
 });
@@ -161,12 +160,30 @@ VoilaUser.find({ username : username}, function (err, docs) {
                      afterFront:afterFront,
                      afterLeft:afterLeft,
                      afterRight:afterRight,
-                     afterBack:afterBack
+                     afterBack:afterBack,
+                     username: docs[0].username,
+                     firstName: docs[0].firstName,
+                     lastName: docs[0].lastName,
+                     beforeWeight: docs[0].beforeWeight,
+                     afterWeight: docs[0].afterWeight,
+                     beforeBmi: docs[0].beforeBmi,
+                     afterBmi: docs[0].afterBmi,
+                     height: docs[0].height,
+                     secret: docs[0].secret
                       });
                  }
                  else {
                  console.log(docs);
-                 res.render('yop', {username: docs[0].username} );
+                 res.render('uploadPics', {username: docs[0].username,
+                                           firstName: docs[0].firstName,
+                                           lastName: docs[0].lastName,
+                                           beforeWeight: docs[0].beforeWeight,
+                                           afterWeight: docs[0].afterWeight,
+                                           beforeBmi: docs[0].beforeBmi,
+                                           afterBmi: docs[0].afterBmi,
+                                           height: docs[0].height,
+                                           secret: docs[0].secret
+                                           });
                }
              }
      else {
@@ -187,13 +204,19 @@ app.post("/register", (req,res) => {
   var password = hashAndSaltPass[0];
   var firstName = req.body.firstName;
   var lastName = req.body.lastName;
-  var weight = req.body.weight;
+  var beforeWeight = req.body.beforeWeight;
+  var afterWeight = req.body.afterWeight;
   var height = req.body.height;
+  var secrets = req.body.secrets;
+
   var salt = hashAndSaltPass[1];
 
-  var bmiWeight = weight * 0.453592;
+  var beforeBmiWeight = beforeWeight * 0.453592;
+  var afterBmiWeight = afterWeight * 0.453592;
   var bmiHeight = Math.pow(height * 0.3048, 2);
-  var bmi = bmiWeight / bmiHeight;
+  var beforeBmi = beforeBmiWeight / bmiHeight;
+  var afterBmi = afterBmiWeight / bmiHeight;
+
 
 
   // Adds user to database if they dont already exists
@@ -210,9 +233,12 @@ app.post("/register", (req,res) => {
         salt: salt,
         firstName : firstName,
         lastName : lastName,
-        weight : weight,
+        beforeWeight : beforeWeight,
+        afterWeight : afterWeight,
         height: height,
-        bmi: bmi
+        beforeBmi: beforeBmi,
+        afterBmi: afterBmi,
+        secrets: secrets
       });
 
       user.save();
@@ -234,6 +260,8 @@ app.post("/register", (req,res) => {
 // Code for user uploading their before and after pics
 app.post('/upload',(req, res, next) => {
 var username = req.body.username;
+var firstName = req.body.firstName;
+var lastName = req.body.lastName;
 
 const file = req.files.image;
 console.log(file);
@@ -259,7 +287,7 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
         console.log(err);
       }
       else {
-        console.log(username);
+        console.log(username + firstName + lastName);
         console.log("update successful!");
         console.log(doc);
       }
@@ -269,7 +297,7 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
 
 
 
-   res.render('yopPost', {photos:photos});
+   res.render('postPics', {photos:photos});
 
 
  }

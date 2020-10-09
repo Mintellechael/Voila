@@ -65,22 +65,22 @@ $("#uploadPrompt").html(prompt);
 });
 
 $(".front").one("click",function() {
-  $(".after-front").css({"visibility" : "visible"});
+  $(".after-front").fadeIn(400);
 });
 
 $(".l-side").one("click",function() {
-  $(".after-side").css({"visibility" : "visible"});
+  $(".after-side").fadeIn(400);
 });
 
 $(".r-side").one("click",function() {
-  $(".after-side2").css({"visibility" : "visible"});
+  $(".after-side2").fadeIn(400);
 });
 
 $(".back").one("click",function() {
-  $(".after-back").css({"visibility" : "visible"});
+  $(".after-back").fadeIn(400);
 });
 
 $(".bf").one("click", function() {
-  var clap = new Audio("cheer3.mp3");
-  clap.play();
+  var magic = new Audio("Magic-wand-sound-effect.mp3");
+  magic.play();
 });

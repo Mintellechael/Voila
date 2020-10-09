@@ -1,68 +1,51 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Voila!</title>
+<%- include('partials/header'); -%>
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet" />
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/d3js/5.15.1/d3.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<link rel="stylesheet" href="styles.css" />
-  </head>
+<body>
+
+    <div class="container-fluid  heading ">
+
+      <img class="logo" src="images/magicwand.png" alt="magic wand" />
+      <h1> Voila ! </h1>
+
+    </div>
 
 
-  <body>
+    <div class= "infoo">
 
-<div class="container-fluid  heading ">
+      <h2 id="uploadPrompt">Register</h2>
 
-  <img class="logo" src="images/magicwand.png" alt="magic wand" />
-  <h1> Voila ! </h1>
+        <form action='/register' id="login" method="post">
 
-</div>
+            <label for="username">username</label>
+            <input type='text' name='username'/> <br />
 
-<div class= "infoo">
+            <label for="password">password</label>
+            <input type='text' name='password'/> <br />
 
-<h2 id="uploadPrompt">Register</h2>
+            <label for="firstName">First Name</label>
+            <input type='text' name='firstName'/> <br />
 
-<form action='/register' id="login" method="post">
+            <label for="lastName">Last Name</label>
+            <input type='text' name='lastName'/>  <br />
 
-  <label for="username">username</label>
-     <input type='text' name='username'/> <br />
+            <label for="beforeWeight">Before Weight</label>
+            <input type='number' name='beforeWeight'/> <br />
 
-  <label for="password">password</label>
-    <input type='text' name='password'/> <br />
+            <label for="afterWeight">After Weight</label>
+            <input type='number' name='afterWeight'/> <br />
 
-    <label for="firstName">First Name</label>
-       <input type='text' name='firstName'/> <br />
+            <label for="height">height</label>
+            <input type='number' name='height'/> <br />
+            
+            <textarea name="secrets" form="login">Whoa! How'd you do that?! (how'd you make that transformation?)...</textarea>
 
-       <label for="lastName">Last Name</label>
-          <input type='text' name='lastName'/>  <br />
+            <input id="registerButton" type="submit" value="submit" />
 
-          <label for="weight">Weight</label>
-             <input type='number' name='weight'/> <br />
+        </form>
 
-             <label for="height">height</label>
-                <input type='number' name='height'/> <br />
-
- <input id="registerButton" type="submit" value="submit" />
-</form>
-
-
-
-</div>
-
-
-
-
+    </div>
 
 <script type="text/javascript" src="/javascripts/voila.js" > </script>
 
-
-
-  </body>
-
-
-
+</body>
 </html>
