@@ -44,6 +44,11 @@ mongoose.connection.on("connected", (err, res) => {
 
 const Mongoose = require("mongoose")
 
+// Random password generator Setup
+
+var generator = require('generate-password');
+
+
 // Password Salt and Hash Requirements
 var crypto = require("crypto");
 var genRandomString = function(length){
@@ -89,6 +94,8 @@ const voilaUserSchema = new mongoose.Schema ({
   username : String,
   password: String,
   salt: String,
+  friendCode: String,
+  friendCodeSalt:String,
   firstName : String,
   lastName : String,
   beforeWeight : Number,
@@ -125,6 +132,10 @@ res.render('login');
 
 app.get("/register",(req,res) => {
 res.render('register');
+});
+
+app.get("/friendCode", (req,res) => {
+  res.render('friendCode');
 });
 
 app.post("/login", (req,res) => {
@@ -169,7 +180,7 @@ VoilaUser.find({ username : username}, function (err, docs) {
                      beforeBmi: docs[0].beforeBmi,
                      afterBmi: docs[0].afterBmi,
                      height: docs[0].height,
-                     secret: docs[0].secret
+                     secrets: docs[0].secrets
                       });
                  }
                  else {
@@ -182,7 +193,7 @@ VoilaUser.find({ username : username}, function (err, docs) {
                                            beforeBmi: docs[0].beforeBmi,
                                            afterBmi: docs[0].afterBmi,
                                            height: docs[0].height,
-                                           secret: docs[0].secret
+                                           secrets: docs[0].secrets
                                            });
                }
              }
@@ -208,6 +219,15 @@ app.post("/register", (req,res) => {
   var afterWeight = req.body.afterWeight;
   var height = req.body.height;
   var secrets = req.body.secrets;
+
+  var friendCodePlain = generator.generate({
+      length: 10,
+      numbers: true });
+  var hashAndSaltFriendCode = saltHashPassword(friendCodePlain);
+  var friendCodeSecure = hashAndSaltFriendCode[0];
+  var friendCodeSalt = hashAndSaltFriendCode[1];
+
+
 
   var salt = hashAndSaltPass[1];
 
@@ -238,12 +258,15 @@ app.post("/register", (req,res) => {
         height: height,
         beforeBmi: beforeBmi,
         afterBmi: afterBmi,
-        secrets: secrets
+        secrets: secrets,
+        friendCode : friendCodeSecure,
+        friendCodeSalt : friendCodeSalt
       });
 
       user.save();
       var message = "you've been successfully registered!";
       console.log("you've been successfully registered! Login!");
+      console.log("the code to share with friends is : " + friendCodePlain);
       res.render('loginSuccess', {message:message });
     }
 
@@ -297,17 +320,58 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
 
 
 
-   res.render('postPics', {photos:photos});
-
-
+   res.render('postPics', {firstName : firstName, lastName: lastName, photos:photos});
  }
 
 });
-
-
-
-
 });
+
+app.post('/friendCode', (req,res) => {
+
+  var friendUsername = req.body.friendUsername;
+  var friendCode = req.body.friendCode;
+
+  VoilaUser.find({ username : friendUsername}, function (err, docs) {
+       if (err) {
+       console.log(err)
+       }
+
+       else if (docs[0].username === friendUsername) {
+         console.log(docs[0].friendCodeSalt);
+             if (validatePassword(friendCode,docs[0].friendCodeSalt) === docs[0].friendCode) {
+
+                     res.render('loginPost', {
+                       beforeFront: docs[0].beforePics.front,
+                       beforeLeft: docs[0].beforePics.left,
+                       beforeRight: docs[0].beforePics.right,
+                       beforeBack: docs[0].beforePics.back,
+                       afterFront: docs[0].afterPics.front,
+                       afterLeft: docs[0].afterPics.left,
+                       afterRight: docs[0].afterPics.right,
+                       afterBack: docs[0].afterPics.back,
+                       username: docs[0].username,
+                       firstName: docs[0].firstName,
+                       lastName: docs[0].lastName,
+                       beforeWeight: docs[0].beforeWeight,
+                       afterWeight: docs[0].afterWeight,
+                       beforeBmi: docs[0].beforeBmi,
+                       afterBmi: docs[0].afterBmi,
+                       height: docs[0].height,
+                       secrets: docs[0].secrets
+                        });
+                   }
+                   else {
+                      console.log("shit aint workin fam");
+                   }
+               }
+       else {
+         console.log("code is incorrect! you dont have access to this magic show!")
+         // var error =  "password is incorrect";
+         // res.render('loginError', {error:error});
+         // console.log("Password is incorrect!!!");
+       }
+     });
+  });
 
 
 

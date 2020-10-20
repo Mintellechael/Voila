@@ -18,11 +18,18 @@ h2 {
   position: sticky;
   top : 0;
 }
+
 .before-info {
 
   position: absolute;
-  left : 100px;
+  left : 400px;
   color : white;
+}
+.after-info {
+  display: none;
+  position: absolute;
+  left : 850px;
+  color : yellow;
 }
 
 .logo {
@@ -44,9 +51,9 @@ h2 {
 
 .b1 {
   position: relative;
-  left : 30%;
+  left : 20%;
   padding-bottom : 50px;
-  padding-top : 20px;
+  padding-top : 100px;
 
 }
 

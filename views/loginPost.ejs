@@ -19,11 +19,22 @@
     <div class= "infoo">
 
       <p class= "before-info">
-        Name : Michael Akinlosotu <%= firstName + lastName %> <br />
-        Weight : 220lbs <%= beforeWeight %> <br>
-        BMI: 17%
+        Name : <%= firstName + " " + lastName %> <br />
+        Before Weight :<%= beforeWeight %> lbs <br>
+        Height : <%= height %>
+        Before BMI: <% beforeBmi %>
       </p>
 
+      <p class= "after-info">
+        Name : <%= firstName + " " + lastName %> <br />
+        After Weight :<%= afterWeight %> lbs <br>
+        Height : <%= height %>
+        Before BMI: <% afterBmi %>
+        The magician's secret : <%=secrets %>
+
+      </p>
+
+    
       <div class="container-fluid b1">
           <img class="bf front" src= "<%= beforeFront %>" alt="Before Front Picture" />
           <img class="after-front" src= "<%= afterFront %>"  alt="After Front Picture" />

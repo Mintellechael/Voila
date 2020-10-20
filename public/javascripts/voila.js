@@ -66,6 +66,7 @@ $("#uploadPrompt").html(prompt);
 
 $(".front").one("click",function() {
   $(".after-front").fadeIn(400);
+  $(".after-info").fadeIn(400);
 });
 
 $(".l-side").one("click",function() {

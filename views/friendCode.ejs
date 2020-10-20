@@ -1,0 +1,36 @@
+<%- include('partials/header'); -%>
+
+<body>
+
+    <div class="container-fluid  heading ">
+
+      <img class="logo" src="images/magicwand.png" alt="magic wand" />
+      <h1> Voila ! </h1>
+
+    </div>
+
+
+    <div class= "infoo">
+
+      <h2 id="uploadPrompt">Register</h2>
+
+        <form action='/friendCode' id="friendCode" method="post">
+
+            <label for="friendUsername">username</label>
+            <input type='text' name='friendUsername'/> <br />
+
+            <label for="friendCode">username</label>
+            <input type='text' name='friendCode'/> <br />
+
+
+
+            <input id="friendCode" type="submit" value="submit" />
+
+        </form>
+
+    </div>
+
+<script type="text/javascript" src="/javascripts/voila.js" > </script>
+
+</body>
+</html>
