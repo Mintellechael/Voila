@@ -1,25 +1,15 @@
 <%- include('partials/header'); -%>
 
 
-<body>
-
-    <div class="container-fluid  heading ">
-
-      <img class="logo" src="images/magicwand.png" alt="magic wand" />
-      <h1> Voila ! </h1>
-
-      <p class="other-text"></p>
-
-    </div>
 
 
     <div class= "infoo">
 
-
-    <h2 id="uploadPrompt">Upload Front-Facing Before Picture</h2>
+     <div class="upload-prompt">
+       <h2 id="uploadPrompt"> Upload Front-Facing Before Picture</h2>
+    </div>
 
     <form action='/upload' id="cloudUpload" method="post" enctype="multipart/form-data">
-     <input type='file' name='image' />
      <input type="hidden" name="username" value="<%= username %>" />
      <input type="hidden" name="firstName" value="<%= firstName %>" />
      <input type="hidden" name="lastName" value="<%= lastName %>" />
@@ -28,14 +18,19 @@
      <input type="hidden" name="beforeBmi" value="<%= beforeBmi %>" />
      <input type="hidden" name="afterBmi" value="<%= afterBmi %>" />
      <input type="hidden" name="height" value="<%= height %>" />
-     <input type="hidden" name="secret" value="<%= secrets %>" />
+     <input type="hidden" name="secrets" value="<%= secrets %>" />
 
-     <input id="submitButton" type="submit" value="submit" />
+
+      <input class="btn image-uploader choose-file-button btn-warning"  type='file' name='image' />
+      <input class="btn btn-outline-warning image-uploader-submit-button" id="submitButton" type="submit" value="submit" />
+
     </form>
 
-
-
     </div>
+
+<i class="far fa-images"></i>
+<i class="fas fa-arrow-alt-circle-right"></i>
+<img class="magic-hat" id="magic-hat" src="images/magic-hat.png" alt="Girl in a jacket">
 
 
 
@@ -43,6 +38,4 @@
 
 <script type="text/javascript" src="/javascripts/voila.js" > </script>
 
-
-  </body>
-</html>
+<%- include('partials/footer'); -%>

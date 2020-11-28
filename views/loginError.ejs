@@ -2,35 +2,22 @@
 
 
 
-<body>
+  <h2 class="login-form-title">Login</h2>
+  <h3 class="login-error-message">  <%= error %> </h3>
 
-    <div class="container-fluid  heading ">
-
-      <img class="logo" src="images/magicwand.png" alt="magic wand" />
-      <h1> Voila ! </h1>
-
-    </div>
+    <div class= "login-form  form-control-lg">
 
 
-    <div class= "infoo">
-
-        <h2 >Login</h2>
-
-          <form action='/login' id="login" method="post">
-
-            <label for="username">username</label>
-            <input type='text' name='username'/>
-            <label for="password">password</label>
-            <input type='text' name='password'/>
-            <input id="loginButton" type="submit" value="submit" />
-            <h3>  <%= error %> </h3>
-
-          </form>
+        <form  action='/login' id="login" method="post">
+          <input type='textarea'placeholder="username" name='username' required/> <br /> <br />
+          <input type='text' placeholder="password"name='password' required/> <br /> <br />
+          <input class="login-submit-button btn btn-lg btn-warning"id="loginButton" type="submit" value="submit" />
+        </form>
 
     </div>
+
 
 
 <script type="text/javascript" src="/javascripts/voila.js" > </script>
 
-</body>
-</html>
+<%- include('partials/footer'); -%>

@@ -1,45 +1,29 @@
 <%- include('partials/header'); -%>
 
-<body>
-
-    <div class="container-fluid  heading ">
-
-      <img class="logo" src="images/magicwand.png" alt="magic wand" />
-      <h1> Voila ! </h1>
-
-    </div>
+<h2 class="register-title" id="uploadPrompt">Register</h2>
 
 
-    <div class= "infoo">
+    <div class= "register-form ">
 
-      <h2 id="uploadPrompt">Register</h2>
 
-        <form action='/register' id="login" method="post">
+        <form  action='/register' id="login" method="post">
 
-            <label for="username">username</label>
-            <input type='text' name='username'/> <br />
+            <input  placeholder="username" id="validateUsername" type='text' name='username' required/>
 
-            <label for="password">password</label>
-            <input type='text' name='password'/> <br />
+            <input placeholder="password" type='text' name='password' required/> <br /> <br />
 
-            <label for="firstName">First Name</label>
-            <input type='text' name='firstName'/> <br />
+            <input placeholder="first name" type='text' name='firstName' required/>
 
-            <label for="lastName">Last Name</label>
-            <input type='text' name='lastName'/>  <br />
+            <input placeholder="last name" type='text' name='lastName' required/>  <br /> <br />
 
-            <label for="beforeWeight">Before Weight</label>
-            <input type='number' name='beforeWeight'/> <br />
+            <input placeholder="before weight"type='number' name='beforeWeight' required/>
 
-            <label for="afterWeight">After Weight</label>
-            <input type='number' name='afterWeight'/> <br />
+            <input placeholder="after weight" type='number' name='afterWeight'required/> <br /> <br />
 
-            <label for="height">height</label>
-            <input type='number' name='height'/> <br />
-            
-            <textarea name="secrets" form="login">Whoa! How'd you do that?! (how'd you make that transformation?)...</textarea>
 
-            <input id="registerButton" type="submit" value="submit" />
+            <textarea placeholder="Whoa! How'd you make that transformation?" name="secrets" form="login"></textarea>
+            <input placeholder="height : (feet.inches) " step="0.1" class="height-box" type='number' name='height'/> <br /> <br />
+            <input id="registerButton" class="register-button btn btn-warning btn-xlarge"type="submit" value="submit" />
 
         </form>
 
@@ -47,5 +31,4 @@
 
 <script type="text/javascript" src="/javascripts/voila.js" > </script>
 
-</body>
-</html>
+<%- include('partials/footer'); -%>

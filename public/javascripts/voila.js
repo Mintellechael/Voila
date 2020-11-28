@@ -2,7 +2,10 @@
 var picCount = 0;
 
 
+
 $("#submitButton").click(function() {
+
+
 
   picCount ++;
   var newCount = picCount;
@@ -14,13 +17,13 @@ $("#submitButton").click(function() {
 
     case 1 :
 
-     prompt = "<h2> Upload Front Facing After Picture </h2>"
+     prompt = "<h2>  Upload Front Facing After Picture </h2>"
 
     break;
 
     case 2 :
 
-    prompt = "<h2>  Upload Left Facing Before Picture   </h2>"
+    prompt = "<h2 >  Upload Left Facing Before Picture   </h2>"
 
     break;
 
@@ -52,6 +55,7 @@ $("#submitButton").click(function() {
 
     prompt = "<h2>  Upload Back Facing After Picture   </h2>"
     break;
+
   }
 
   if (picCount === 8) {
@@ -59,7 +63,7 @@ $("#submitButton").click(function() {
 }
 else {
 
-$("#uploadPrompt").html(prompt);
+$(".upload-prompt").html(prompt);
 
 }
 });
@@ -67,6 +71,7 @@ $("#uploadPrompt").html(prompt);
 $(".front").one("click",function() {
   $(".after-front").fadeIn(400);
   $(".after-info").fadeIn(400);
+  $(".secret").fadeIn(400);
 });
 
 $(".l-side").one("click",function() {

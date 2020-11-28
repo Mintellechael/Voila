@@ -2,30 +2,38 @@
 
 
 
-<body>
 
 
 
-    <div class="container-fluid  heading ">
+    <div class= "reveal-grid">
 
-      <img class="logo" src="images/magicwand.png" alt="magic wand" />
-      <h1> Voila ! </h1>
+      <div class="before-after-section">
 
+       <p class="reveal-name">
+       Name : <%= firstName + " " + lastName %> <br />
+       </p>
 
-      <p class="other-text">
-      </p>
+         <p class= "before-info">
 
-    </div>
+           Before Weight :<%= beforeWeight %> lbs <br>
+           Height : <%= height %>
+           Before BMI: <%= beforeBmi %>
+         </p>
 
+         <p class= "after-info">
+           After Weight :<%= afterWeight %> lbs <br>
+           Height : <%= height %>
+           Before BMI: <%= afterBmi %>
 
+         </p>
 
-    <div class= "infoo">
+         <p class="secret">
 
-      <p class= "before-info">
-      Name : Michael Akinlosotu <%= firstName + lastName %> <br />
-      Weight : <%= beforeWeight %> <br>
-      BMI: <%= beforeBmi %>
-      </p>
+           The magician's secret : <%= secrets %>
+
+         </p>
+
+          </div>
 
         <div class="container-fluid b1">
 
@@ -52,5 +60,4 @@
     </div>
 
 <script type=" text/javascript" src="/javascripts/voila.js"> </script>
-</body>
-</html>
+<%- include('partials/footer'); -%>

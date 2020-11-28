@@ -119,7 +119,7 @@ const VoilaUser = new mongoose.model("VoilaUser", voilaUserSchema);
 // INDEX
 
 app.get("/",(req,res) => {
-  res.render('login');
+  res.render('index');
 });
 
 // LOGIN PAGE
@@ -138,6 +138,8 @@ app.get("/friendCode", (req,res) => {
   res.render('friendCode');
 });
 
+
+// LOGIN FUNCTIONALITY
 app.post("/login", (req,res) => {
 
 var username = req.body.username;
@@ -177,8 +179,8 @@ VoilaUser.find({ username : username}, function (err, docs) {
                      lastName: docs[0].lastName,
                      beforeWeight: docs[0].beforeWeight,
                      afterWeight: docs[0].afterWeight,
-                     beforeBmi: docs[0].beforeBmi,
-                     afterBmi: docs[0].afterBmi,
+                     beforeBmi: Math.round(docs[0].beforeBmi),
+                     afterBmi: Math.round(docs[0].afterBmi),
                      height: docs[0].height,
                      secrets: docs[0].secrets
                       });
@@ -198,7 +200,7 @@ VoilaUser.find({ username : username}, function (err, docs) {
                }
              }
      else {
-       var error =  "password is incorrect";
+       var error =  "username or password is incorrect";
        res.render('loginError', {error:error});
        console.log("Password is incorrect!!!");
      }
@@ -267,7 +269,7 @@ app.post("/register", (req,res) => {
       var message = "you've been successfully registered!";
       console.log("you've been successfully registered! Login!");
       console.log("the code to share with friends is : " + friendCodePlain);
-      res.render('loginSuccess', {message:message });
+      res.render('loginSuccess', {message:message , friendCodePlain : friendCodePlain });
     }
 
     else {
@@ -285,6 +287,12 @@ app.post('/upload',(req, res, next) => {
 var username = req.body.username;
 var firstName = req.body.firstName;
 var lastName = req.body.lastName;
+var height = req.body.height;
+var beforeWeight = req.body.beforeWeight;
+var afterWeight = req.body.afterWeight;
+var beforeBmi = req.body.beforeBmi;
+var afterBmi = req.body.afterBmi;
+var secrets = req.body.secrets;
 
 const file = req.files.image;
 console.log(file);
@@ -317,10 +325,16 @@ cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
     });
 
 
-
-
-
-   res.render('postPics', {firstName : firstName, lastName: lastName, photos:photos});
+   res.render('postPics', {firstName : firstName,
+     lastName: lastName,
+     height : height,
+     photos:photos,
+     beforeWeight : beforeWeight,
+     afterWeight : afterWeight,
+     secrets : secrets,
+     beforeBmi : Math.round(beforeBmi),
+     afterBmi: Math.round(afterBmi),
+     });
  }
 
 });

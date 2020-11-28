@@ -1,36 +1,21 @@
 <%- include('partials/header'); -%>
 
-<body>
+<h2 class="friend-code-title">Enter Friend's Code!</h2> <br />
+<p class="friend-code-sub-message">Enjoy the Show!!!  </p>
 
-    <div class="container-fluid  heading ">
-
-      <img class="logo" src="images/magicwand.png" alt="magic wand" />
-      <h1> Voila ! </h1>
-
-    </div>
-
-
-    <div class= "infoo">
-
-      <h2 id="uploadPrompt">Register</h2>
+    <div class= "login-form form-control-lg">
 
         <form action='/friendCode' id="friendCode" method="post">
-
-            <label for="friendUsername">username</label>
-            <input type='text' name='friendUsername'/> <br />
-
-            <label for="friendCode">username</label>
-            <input type='text' name='friendCode'/> <br />
-
-
-
-            <input id="friendCode" type="submit" value="submit" />
-
+            <input placeholder="friends username" type='textarea' name='friendUsername' required/> <br /> <br />
+            <input placeholder="friends code" type='text' name='friendCode' required/> <br /> <br />
+            <input class="login-submit-button btn btn-lg btn-warning"id="friendCode" type="submit" value="submit" />
         </form>
 
     </div>
 
+
+
+
 <script type="text/javascript" src="/javascripts/voila.js" > </script>
 
-</body>
-</html>
+<%- include('partials/footer'); -%>

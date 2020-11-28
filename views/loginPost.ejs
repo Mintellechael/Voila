@@ -1,40 +1,42 @@
 <%- include('partials/header'); -%>
 
-<body>
 
 
 
-    <div class="container-fluid  heading ">
 
-      <img class="logo" src="images/magicwand.png" alt="magic wand" />
-      <h1> Voila ! </h1>
+    <div class= "reveal-grid">
 
+   <div class="before-after-section">
 
-      <p class="other-text"></p>
-
-    </div>
-
-
-
-    <div class= "infoo">
+    <p class="reveal-name">
+    Name : <%= firstName + " " + lastName %> <br />
+    </p>
 
       <p class= "before-info">
-        Name : <%= firstName + " " + lastName %> <br />
+
         Before Weight :<%= beforeWeight %> lbs <br>
         Height : <%= height %>
-        Before BMI: <% beforeBmi %>
+        Before BMI: <%= beforeBmi %>
       </p>
 
       <p class= "after-info">
-        Name : <%= firstName + " " + lastName %> <br />
         After Weight :<%= afterWeight %> lbs <br>
         Height : <%= height %>
-        Before BMI: <% afterBmi %>
+        Before BMI: <%= afterBmi %>
+
+      </p>
+
+      <p class="secret">
+
         The magician's secret : <%=secrets %>
 
       </p>
 
-    
+       </div>
+
+
+
+
       <div class="container-fluid b1">
           <img class="bf front" src= "<%= beforeFront %>" alt="Before Front Picture" />
           <img class="after-front" src= "<%= afterFront %>"  alt="After Front Picture" />
@@ -59,5 +61,4 @@
 
 <script type=" text/javascript" src="/javascripts/voila.js"> </script>
 
-</body>
-</html>
+<%- include('partials/footer'); -%>
