@@ -30,7 +30,7 @@ api_secret: process.env.API_SECRET
 
 // Mongoose Setup
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/testVoiladb", {
+mongoose.connect("mongodb+srv://admin-mikey:needher101@voila.hdzpc.mongodb.net/ voilaDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false });
@@ -387,7 +387,10 @@ app.post('/friendCode', (req,res) => {
      });
   });
 
-
+  let port = process.env.PORT;
+  if (port == null || port == "") {
+    port = 3000;
+  }
 
 app.listen(port,() => {
   console.log("UP AND RUNNINNNN!");
