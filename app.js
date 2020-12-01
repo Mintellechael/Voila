@@ -8,7 +8,6 @@ const ejs = require("ejs");
 
 const express = require("express");
 const app = express();
-const port = 3000;
 const path = require('path');
 
 // Set up Express, EJS , bodyParser
@@ -30,7 +29,7 @@ api_secret: process.env.API_SECRET
 
 // Mongoose Setup
 const mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://admin-mikey:needher101@voila.hdzpc.mongodb.net/ voilaDB", {
+mongoose.connect("mongodb+srv://admin-mikey:needher101@voila.hdzpc.mongodb.net/voilaDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false });
@@ -387,8 +386,10 @@ app.post('/friendCode', (req,res) => {
      });
   });
 
-  let port = process.env.PORT || 3000;
-
+  let port = process.env.PORT;
+  if (port == null || port == "") {
+    port = 3000;
+  }
 
 app.listen(port,() => {
   console.log("UP AND RUNNINNNN!");
