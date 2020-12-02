@@ -296,7 +296,7 @@ var secrets = req.body.secrets;
 const file = req.files.image;
 console.log(file);
 
-cloudinary.uploader.unsigned_upload(file.tempFilePath, {timeout:30000}, function(err,result) {
+cloudinary.uploader.unsigned_upload(file.tempFilePath, function(err,result) {
   var cloudPhotos = [];
   console.log("Error :", err);
   console.log("Result :", result.url);
