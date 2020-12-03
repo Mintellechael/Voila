@@ -27,14 +27,6 @@ api_key: process.env.API_KEY,
 api_secret: process.env.API_SECRET
 });
 
-cloudinary.api.create_upload_preset(
-  { name: "ar2yg47b",
-    unsigned: true,
-    tags: "remote",
-    allowed_formats: "jpg,png" },
-  function(error, result){console.log(result);
-  });
-
 
 // Mongoose Setup
 const mongoose = require("mongoose");
