@@ -296,7 +296,7 @@ var secrets = req.body.secrets;
 const file = req.files.image;
 console.log(file);
 
-cloudinary.uploader.unsigned_upload(file.tempFilePath, function(err,result) {
+cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
   var cloudPhotos = [];
   console.log("Error :", err);
   console.log("Result :", result.url);
@@ -388,7 +388,7 @@ app.post('/friendCode', (req,res) => {
 
   let port = process.env.PORT;
   if (port == null || port == "") {
-    port = 80;
+    port = 3000;
   }
 
 app.listen(port,() => {
