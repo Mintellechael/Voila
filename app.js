@@ -388,7 +388,7 @@ app.post('/friendCode', (req,res) => {
 
   let port = process.env.PORT;
   if (port == null || port == "") {
-    port = 8080;
+    port = 80;
   }
 
 app.listen(port,() => {
