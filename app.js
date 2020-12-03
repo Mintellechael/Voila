@@ -27,6 +27,15 @@ api_key: process.env.API_KEY,
 api_secret: process.env.API_SECRET
 });
 
+cloudinary.api.create_upload_preset(
+  { name: "ar2yg47b",
+    unsigned: true,
+    tags: "remote",
+    allowed_formats: "jpg,png" },
+  function(error, result){console.log(result);
+  });
+
+
 // Mongoose Setup
 const mongoose = require("mongoose");
 mongoose.connect("mongodb+srv://admin-mikey:needher101@voila.hdzpc.mongodb.net/voilaDB", {
@@ -296,7 +305,7 @@ var secrets = req.body.secrets;
 const file = req.files.image;
 console.log(file);
 
-cloudinary.uploader.upload(file.tempFilePath, function(err,result) {
+cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey"}, function(err,result) {
   var cloudPhotos = [];
   console.log("Error :", err);
   console.log("Result :", result.url);
