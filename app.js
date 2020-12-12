@@ -297,7 +297,7 @@ var secrets = req.body.secrets;
 const file = req.files.image;
 console.log(file);
 
-cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey", allowed_formats : ['jpg', 'png'], format= 'jpg'}, function(err,result) {
+cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey", allowed_formats : "jpg, png" , function(err,result) {
   var cloudPhotos = [];
   console.log("Error :", err);
   console.log("Result :", result.url);
