@@ -87,6 +87,7 @@ function validatePassword(userpassword,salt) {
 // --------------------------------------------------------------------
 
 var photos = [];
+var fCode =  " ";
 
 
 // Database Setup --------------------------------------------------------------
@@ -226,6 +227,7 @@ app.post("/register", (req,res) => {
   var friendCodePlain = generator.generate({
       length: 10,
       numbers: true });
+  fCode = friendCodePlain;
   var hashAndSaltFriendCode = saltHashPassword(friendCodePlain);
   var friendCodeSecure = hashAndSaltFriendCode[0];
   var friendCodeSalt = hashAndSaltFriendCode[1];
@@ -270,6 +272,7 @@ app.post("/register", (req,res) => {
       var message = "you've been successfully registered!";
       console.log("you've been successfully registered! Login!");
       console.log("the code to share with friends is : " + friendCodePlain);
+      console.log("saved friend code =" + fCode);
       res.render('loginSuccess', {message:message , friendCodePlain : friendCodePlain });
     }
 
