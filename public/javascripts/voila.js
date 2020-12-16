@@ -68,6 +68,17 @@ $(".upload-prompt").html(prompt);
 }
 });
 
+$("#resetButton").click(function() {
+  event.preventDefault()
+  var conVal = confirm("are you sure? your picures will be deleted and you will have to uplaod new ones.");
+  if(conVal === false) {
+
+  }
+  else {
+    $("#resetButton").submit();
+  }
+});
+
 $(".front").one("click",function() {
   $(".after-front").fadeIn(400);
   $(".after-info").fadeIn(400);

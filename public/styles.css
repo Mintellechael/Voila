@@ -30,6 +30,11 @@ display: inline-block;
   }
 }
 
+.edit-checkbox {
+  display: none;
+  width:40px;
+  height:40px;
+}
 
 
 .friend-code{

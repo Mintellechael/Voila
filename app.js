@@ -139,6 +139,7 @@ app.get("/friendCode", (req,res) => {
 });
 
 
+
 // LOGIN FUNCTIONALITY
 app.post("/login", (req,res) => {
 
@@ -154,7 +155,7 @@ VoilaUser.find({ username : username}, function (err, docs) {
 
      else if (docs[0].username === username) {
            if (validatePassword(password,docs[0].salt) === docs[0].password) {
-                 if (docs[0].beforePics.front != undefined) {
+                 if (docs[0].beforePics.front != undefined && docs[0].beforePics.front != " ") {
                    var beforeFront = docs[0].beforePics.front ;
                    var beforeLeft = docs[0].beforePics.left ;
                    var beforeRight = docs[0].beforePics.right ;
@@ -391,6 +392,24 @@ app.post('/friendCode', (req,res) => {
   if (port == null || port == "") {
     port = 3000;
   }
+
+  app.post('/loginPost', (req,res) =>  {
+
+    var username = req.body.usernameReset;
+
+    VoilaUser.findOneAndUpdate({username: username},
+    { $set: { beforePics : {front : " " , left : " ", right : " ", back: " "},
+     afterPics : {front : " " , left : " ", right : " ", back: " "}}},
+     function (err,doc) {
+       if (err){
+         console.log(err);
+       }
+       else {
+         res.render('login');
+       }
+     });
+  });
+
 
 app.listen(port,() => {
   console.log("UP AND RUNNINNNN!");
