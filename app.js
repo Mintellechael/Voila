@@ -410,6 +410,24 @@ app.post('/friendCode', (req,res) => {
      });
   });
 
+  app.post('/postPics', (req,res) =>  {
+
+    var username = req.body.usernameReset;
+
+    VoilaUser.findOneAndUpdate({username: username},
+    { $set: { beforePics : {front : " " , left : " ", right : " ", back: " "},
+     afterPics : {front : " " , left : " ", right : " ", back: " "}}},
+     function (err,doc) {
+       if (err){
+         console.log(err);
+       }
+       else {
+         res.render('login');
+       }
+     });
+  });
+
+
 
 app.listen(port,() => {
   console.log("UP AND RUNNINNNN!");
