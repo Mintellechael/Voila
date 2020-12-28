@@ -79,6 +79,12 @@ $("#resetButton").click(function() {
   }
 });
 
+
+
+$('#code-button').click(function () {
+$(".code-to-share").toggle();
+});
+
 $(".front").one("click",function() {
   $(".after-front").fadeIn(400);
   $(".after-info").fadeIn(400);

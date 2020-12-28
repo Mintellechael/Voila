@@ -11,7 +11,7 @@
 
     <p class="reveal-name">
 
-    Name : <%= firstName + " " + lastName %> <br />
+    Name : <%= firstName + " " + lastName  %> <br />
     </p>
 
       <p class= "before-info">
@@ -65,6 +65,14 @@
       <input type="hidden" name="usernameReset" value="<%= username %>" />
       <button type="Submit" id="reset-button" class="btn btn-warning btn-xlarge" value="submit">Reset</button>
     </form>
+
+    <button id="code-button" class="btn btn-warning btn-xlarge" value="submit">Reveal Friend Code</button>
+    <p class="code-to-share">
+      copy & share with friends! : <%= friendCode %> 
+    </p>
+
+
+
 
     </div>
 

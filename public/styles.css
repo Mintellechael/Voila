@@ -36,6 +36,13 @@ display: inline-block;
   height:40px;
 }
 
+.code-to-share {
+  color: yellow;
+  font-size: 80px;
+  display: none;
+  position: absolute;
+}
+
 
 .friend-code{
   color:yellow;

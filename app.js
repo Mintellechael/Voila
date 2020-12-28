@@ -96,7 +96,6 @@ const voilaUserSchema = new mongoose.Schema ({
   password: String,
   salt: String,
   friendCode: String,
-  friendCodeSalt:String,
   firstName : String,
   lastName : String,
   beforeWeight : Number,
@@ -140,12 +139,145 @@ app.get("/friendCode", (req,res) => {
 });
 
 
+// REGISTER FUNCTIONALITY
+
+app.post("/register", (req,res) => {
+  var hashAndSaltPass = saltHashPassword(req.body.password);
+  var username = req.body.username;
+  var password = hashAndSaltPass[0];
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var beforeWeight = req.body.beforeWeight;
+  var afterWeight = req.body.afterWeight;
+  var height = req.body.height;
+  var secrets = req.body.secrets;
+
+  var friendCode = generator.generate({
+      length: 10,
+      numbers: true });
+
+
+  var salt = hashAndSaltPass[1];
+
+  var beforeBmiWeight = beforeWeight * 0.453592;
+  var afterBmiWeight = afterWeight * 0.453592;
+  var bmiHeight = Math.pow(height * 0.3048, 2);
+  var beforeBmi = beforeBmiWeight / bmiHeight;
+  var afterBmi = afterBmiWeight / bmiHeight;
+
+
+
+  // Adds user to database if they dont already exists
+
+  VoilaUser.find({ username: username}, function (err, docs) {
+    if (err) {
+      console.log(err);
+    }
+    else if (docs.length === 0) {
+
+      const user = new VoilaUser ({
+        username : username,
+        password: password,
+        salt: salt,
+        firstName : firstName,
+        lastName : lastName,
+        beforeWeight : beforeWeight,
+        afterWeight : afterWeight,
+        height: height,
+        beforeBmi: beforeBmi,
+        afterBmi: afterBmi,
+        secrets: secrets,
+        friendCode : friendCode,
+      });
+
+      user.save();
+      var message = "you've been successfully registered!";
+      console.log("you've been successfully registered! Login!");
+      console.log("the code to share with friends is : " + friendCode);
+      res.render('loginSuccess', {message:message , friendCode : friendCode });
+    }
+
+    else {
+      var message = "you already have an account! Login!";
+      console.log("you already have an account!");
+      res.render('loginSuccess', {message:message, friendCode: friendCode });
+    }
+
+  });
+  });
+
+
+
+  // Code for user uploading their before and after pics
+  app.post('/upload',(req, res, next) => {
+  var username = req.body.username;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var height = req.body.height;
+  var beforeWeight = req.body.beforeWeight;
+  var afterWeight = req.body.afterWeight;
+  var beforeBmi = req.body.beforeBmi;
+  var afterBmi = req.body.afterBmi;
+  var secrets = req.body.secrets;
+  var friendCode = req.body.friendCode;
+
+
+  const file = req.files.image;
+  console.log(file);
+
+  cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey"}, function(err,result) {
+    var cloudPhotos = [];
+    console.log("Error :", err);
+    console.log("Result :", result.url);
+
+   photos.push(result.url);
+   console.log(photos);
+   console.log("Array size " + photos.length)
+
+   if (photos.length === 8) {
+
+
+  // Adds uploaded photos to users account in database
+     VoilaUser.findOneAndUpdate({username: username},
+     { $set: { beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
+      afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}}},
+      function (err,doc) {
+        if (err){
+          console.log(err);
+        }
+        else {
+          console.log(username + firstName + lastName);
+          console.log("update successful!");
+          console.log(doc);
+        }
+      });
+
+
+     res.render('postPics', {firstName : firstName,
+       username:username,
+       lastName: lastName,
+       height : height,
+       photos:photos,
+       beforeWeight : beforeWeight,
+       afterWeight : afterWeight,
+       secrets : secrets,
+       beforeBmi : Math.round(beforeBmi),
+       afterBmi: Math.round(afterBmi),
+       friendCode:friendCode
+       });
+   }
+
+  });
+  });
+
 
 // LOGIN FUNCTIONALITY
 app.post("/login", (req,res) => {
 
 var username = req.body.username;
 var password = req.body.password;
+var friendCode = req.body.friendCode;
+
 
 // Check Database To See If User Exists
 VoilaUser.find({ username : username}, function (err, docs) {
@@ -184,7 +316,8 @@ VoilaUser.find({ username : username}, function (err, docs) {
                      beforeBmi: Math.round(docs[0].beforeBmi),
                      afterBmi: Math.round(docs[0].afterBmi),
                      height: docs[0].height,
-                     secrets: docs[0].secrets
+                     secrets: docs[0].secrets,
+                     friendCode:docs[0].friendCode
                       });
                  }
                  else {
@@ -211,138 +344,6 @@ VoilaUser.find({ username : username}, function (err, docs) {
 });
 
 
-// POST TO REGISTER PAGE
-
-app.post("/register", (req,res) => {
-  var hashAndSaltPass = saltHashPassword(req.body.password);
-  var username = req.body.username;
-  var password = hashAndSaltPass[0];
-  var firstName = req.body.firstName;
-  var lastName = req.body.lastName;
-  var beforeWeight = req.body.beforeWeight;
-  var afterWeight = req.body.afterWeight;
-  var height = req.body.height;
-  var secrets = req.body.secrets;
-
-  var friendCodePlain = generator.generate({
-      length: 10,
-      numbers: true });
-  fCode = friendCodePlain;
-  var hashAndSaltFriendCode = saltHashPassword(friendCodePlain);
-  var friendCodeSecure = hashAndSaltFriendCode[0];
-  var friendCodeSalt = hashAndSaltFriendCode[1];
-
-
-
-  var salt = hashAndSaltPass[1];
-
-  var beforeBmiWeight = beforeWeight * 0.453592;
-  var afterBmiWeight = afterWeight * 0.453592;
-  var bmiHeight = Math.pow(height * 0.3048, 2);
-  var beforeBmi = beforeBmiWeight / bmiHeight;
-  var afterBmi = afterBmiWeight / bmiHeight;
-
-
-
-  // Adds user to database if they dont already exists
-
-  VoilaUser.find({ username: username}, function (err, docs) {
-    if (err) {
-      console.log(err);
-    }
-    else if (docs.length === 0) {
-
-      const user = new VoilaUser ({
-        username : username,
-        password: password,
-        salt: salt,
-        firstName : firstName,
-        lastName : lastName,
-        beforeWeight : beforeWeight,
-        afterWeight : afterWeight,
-        height: height,
-        beforeBmi: beforeBmi,
-        afterBmi: afterBmi,
-        secrets: secrets,
-        friendCode : friendCodeSecure,
-        friendCodeSalt : friendCodeSalt
-      });
-
-      user.save();
-      var message = "you've been successfully registered!";
-      console.log("you've been successfully registered! Login!");
-      console.log("the code to share with friends is : " + friendCodePlain);
-      console.log("saved friend code =" + fCode);
-      res.render('loginSuccess', {message:message , friendCodePlain : friendCodePlain });
-    }
-
-    else {
-      var message = "you already have an account! Login!";
-      console.log("you already have an account!");
-      res.render('loginSuccess', {message:message });
-    }
-
-  });
-  });
-
-
-// Code for user uploading their before and after pics
-app.post('/upload',(req, res, next) => {
-var username = req.body.username;
-var firstName = req.body.firstName;
-var lastName = req.body.lastName;
-var height = req.body.height;
-var beforeWeight = req.body.beforeWeight;
-var afterWeight = req.body.afterWeight;
-var beforeBmi = req.body.beforeBmi;
-var afterBmi = req.body.afterBmi;
-var secrets = req.body.secrets;
-
-const file = req.files.image;
-console.log(file);
-
-cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey"}, function(err,result) {
-  var cloudPhotos = [];
-  console.log("Error :", err);
-  console.log("Result :", result.url);
-
- photos.push(result.url);
- console.log(photos);
- console.log("Array size " + photos.length)
-
- if (photos.length === 8) {
-
-
-// Adds uploaded photos to users account in database
-   VoilaUser.findOneAndUpdate({username: username},
-   { $set: { beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-    afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}}},
-    function (err,doc) {
-      if (err){
-        console.log(err);
-      }
-      else {
-        console.log(username + firstName + lastName);
-        console.log("update successful!");
-        console.log(doc);
-      }
-    });
-
-
-   res.render('postPics', {firstName : firstName,
-     lastName: lastName,
-     height : height,
-     photos:photos,
-     beforeWeight : beforeWeight,
-     afterWeight : afterWeight,
-     secrets : secrets,
-     beforeBmi : Math.round(beforeBmi),
-     afterBmi: Math.round(afterBmi),
-     });
- }
-
-});
-});
 
 app.post('/friendCode', (req,res) => {
 
@@ -355,10 +356,10 @@ app.post('/friendCode', (req,res) => {
        }
 
        else if (docs[0].username === friendUsername) {
-         console.log(docs[0].friendCodeSalt);
-             if (validatePassword(friendCode,docs[0].friendCodeSalt) === docs[0].friendCode) {
+         console.log(docs[0].friendCode);
+             if (friendCode === docs[0].friendCode) {
 
-                     res.render('loginPost', {
+                     res.render('friendPost', {
                        beforeFront: docs[0].beforePics.front,
                        beforeLeft: docs[0].beforePics.left,
                        beforeRight: docs[0].beforePics.right,
