@@ -36,6 +36,7 @@ display: inline-block;
   height:40px;
 }
 
+
 .code-to-share {
   color: yellow;
   font-size: 80px;
@@ -75,7 +76,6 @@ display: inline-block;
 }
 
 .before-after-section{
-  margin-bottom: 100px;
   font-size: 50%;
   font-family: 'Yanone Kaffeesatz', sans-serif;
 }
@@ -83,9 +83,9 @@ display: inline-block;
 .secret{
   display: none;
   font-size: 40px;
-   position: absolute;
+   position: relative;
    top: 4.5%;
-   left : 35.5%;;
+   left : 23%;;
    color : yellow;
 }
 
@@ -250,14 +250,14 @@ h2 {
 .reveal-name{
   font-size: 40px;
    position: absolute;
-   top: -5%;
-   left : 41%;;
+   top: -3%;
+   left : 38%;;
    color : white;
 }
 
 .before-info {
  font-size: 40px;
-  position: absolute;
+  position: relative;
   top: -1%;
   left : 27%;;
   color : white;
@@ -265,10 +265,15 @@ h2 {
 .after-info {
   display: none;
   font-size: 40px;
-  position: absolute;
+  position: relative;
   top:-1%;
-  left : 53%;
+  left : 27%;
   color : yellow;
+}
+
+.info-position{
+  position: relative;
+  left : -3.7%;
 }
 
 .logo {
@@ -308,7 +313,7 @@ h2 {
   text-align : center;
   color : white;
   font-size : 1.5rem;
-  padding-bottom : 50px;
+  padding-bottom : 100px;
 }
 
 .other-text {

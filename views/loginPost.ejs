@@ -8,33 +8,43 @@
 
    <div class="before-after-section">
 
+   <div class="container">
+      <div class="row">
+        <div class="col-12 reveal-name"
+            <p>
+            Name : <%= firstName + " " + lastName  %> <br />
+            </p>
+        </div>
+    </div>
 
-    <p class="reveal-name">
+    <div class="row info-position">
+      <div class="col-lg-6 col-sm-12">
+            <p class="before-info">
 
-    Name : <%= firstName + " " + lastName  %> <br />
-    </p>
+              Before Weight :<%= beforeWeight %> lbs <br>
+              Height : <%= height %> ft <br />
+              Before BMI: <%= beforeBmi %>
+            </p>
+        </div>
 
-      <p class= "before-info">
+    <div class="col-lg-6 col-sm-12">
+          <p class="after-info">
+            After Weight :<%= afterWeight %> lbs <br>
+            Height : <%= height %> ft<br />
+            Before BMI: <%= afterBmi %>
 
-        Before Weight :<%= beforeWeight %> lbs <br>
-        Height : <%= height %>
-        Before BMI: <%= beforeBmi %>
-      </p>
+          </p>
+      </div>
+    </div>
 
-      <p class= "after-info">
-        After Weight :<%= afterWeight %> lbs <br>
-        Height : <%= height %>
-        Before BMI: <%= afterBmi %>
-
-      </p>
-
+    <div class="col-12 ">
       <p class="secret">
-
         The magician's secret : <%=secrets %>
-
       </p>
+      </div>
+    </div>
 
-       </div>
+      </div>
 
 
       <input type="hidden" name="usernameReset" value="<%= username %>" />
@@ -68,7 +78,7 @@
 
     <button id="code-button" class="btn btn-warning btn-xlarge" value="submit">Reveal Friend Code</button>
     <p class="code-to-share">
-      copy & share with friends! : <%= friendCode %> 
+      copy & share with friends! : <%= friendCode %>
     </p>
 
 

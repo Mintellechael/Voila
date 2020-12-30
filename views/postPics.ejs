@@ -5,36 +5,51 @@
 
 
 
+
     <div class= "reveal-grid">
 
-      <div class="before-after-section">
+   <div class="before-after-section">
 
-       <p class="reveal-name">
-       Name : <%= firstName + " " + lastName %> <br />
-       </p>
+   <div class="container">
+      <div class="row">
+        <div class="col-12 reveal-name"
+            <p>
+            Name : <%= firstName + " " + lastName  %> <br />
+            </p>
+        </div>
+    </div>
 
-         <p class= "before-info">
+    <div class="row info-position">
+      <div class="col-lg-6 col-sm-12">
+            <p class="before-info">
 
-           Before Weight :<%= beforeWeight %> lbs <br>
-           Height : <%= height %>
-           Before BMI: <%= beforeBmi %>
-         </p>
+              Before Weight :<%= beforeWeight %> lbs <br>
+              Height : <%= height %> ft <br />
+              Before BMI: <%= beforeBmi %>
+            </p>
+        </div>
 
-         <p class= "after-info">
-           After Weight :<%= afterWeight %> lbs <br>
-           Height : <%= height %>
-           Before BMI: <%= afterBmi %>
+    <div class="col-lg-6 col-sm-12">
+          <p class="after-info">
+            After Weight :<%= afterWeight %> lbs <br>
+            Height : <%= height %> ft<br />
+            Before BMI: <%= afterBmi %>
 
-         </p>
+          </p>
+      </div>
+    </div>
 
-         <p class="secret">
+    <div class="col-12 ">
+      <p class="secret">
+        The magician's secret : <%=secrets %>
+      </p>
+      </div>
+    </div>
 
-           The magician's secret : <%= secrets %>
+      </div>
 
-         </p>
 
-          </div>
-
+      
         <div class="container-fluid b1">
 
             <img class="bf front" src= "<%= photos[0] %>" alt="Before Front Picture" />

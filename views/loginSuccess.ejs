@@ -4,14 +4,13 @@
 
   <h2 class="login-form-title">Login</h2>
   <h3 class="registered-message">  <%= message %> </h3>
-  <h3 class="friend-code"> Save this code to share with friends :  <%= friendCode %> </h3>
 
     <div class= "login-form  form-control-lg">
 
 
         <form  action='/login' id="login" method="post">
           <input type='textarea'placeholder="username" name='username' required/> <br /> <br />
-          <input type='text' placeholder="password"name='password'required /> <br /> <br />
+          <input type='password' placeholder="password"name='password'required /> <br /> <br />
           <input class="login-submit-button btn btn-lg btn-warning"id="loginButton" type="submit" value="submit" />
         </form>
 

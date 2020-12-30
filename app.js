@@ -149,7 +149,8 @@ app.post("/register", (req,res) => {
   var lastName = req.body.lastName;
   var beforeWeight = req.body.beforeWeight;
   var afterWeight = req.body.afterWeight;
-  var height = req.body.height;
+  var feet = req.body.feet;
+  var inches = req.body.inches;
   var secrets = req.body.secrets;
 
   var friendCode = generator.generate({
@@ -159,6 +160,7 @@ app.post("/register", (req,res) => {
 
   var salt = hashAndSaltPass[1];
 
+  var height = feet+"."+inches;
   var beforeBmiWeight = beforeWeight * 0.453592;
   var afterBmiWeight = afterWeight * 0.453592;
   var bmiHeight = Math.pow(height * 0.3048, 2);
@@ -198,7 +200,7 @@ app.post("/register", (req,res) => {
     }
 
     else {
-      var message = "you already have an account! Login!";
+      var message = "User already exists! Login!";
       console.log("you already have an account!");
       res.render('loginSuccess', {message:message, friendCode: friendCode });
     }
@@ -261,8 +263,8 @@ app.post("/register", (req,res) => {
        beforeWeight : beforeWeight,
        afterWeight : afterWeight,
        secrets : secrets,
-       beforeBmi : Math.round(beforeBmi),
-       afterBmi: Math.round(afterBmi),
+       beforeBmi : Math.round(beforeBmi,2),
+       afterBmi: Math.round(afterBmi,2),
        friendCode:friendCode
        });
    }
@@ -313,8 +315,8 @@ VoilaUser.find({ username : username}, function (err, docs) {
                      lastName: docs[0].lastName,
                      beforeWeight: docs[0].beforeWeight,
                      afterWeight: docs[0].afterWeight,
-                     beforeBmi: Math.round(docs[0].beforeBmi),
-                     afterBmi: Math.round(docs[0].afterBmi),
+                     beforeBmi: Math.round(docs[0].beforeBmi,2),
+                     afterBmi: Math.round(docs[0].afterBmi,2),
                      height: docs[0].height,
                      secrets: docs[0].secrets,
                      friendCode:docs[0].friendCode
@@ -373,8 +375,8 @@ app.post('/friendCode', (req,res) => {
                        lastName: docs[0].lastName,
                        beforeWeight: docs[0].beforeWeight,
                        afterWeight: docs[0].afterWeight,
-                       beforeBmi: docs[0].beforeBmi,
-                       afterBmi: docs[0].afterBmi,
+                       beforeBmi: Math.round(docs[0].beforeBmi),
+                       afterBmi: Math.round(docs[0].afterBmi),
                        height: docs[0].height,
                        secrets: docs[0].secrets
                         });
