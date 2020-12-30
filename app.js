@@ -87,8 +87,7 @@ function validatePassword(userpassword,salt) {
 // --------------------------------------------------------------------
 
 var photos = [];
-var fCode =  " ";
-
+var publicIds = [];
 
 // Database Setup --------------------------------------------------------------
 const voilaUserSchema = new mongoose.Schema ({
@@ -105,7 +104,8 @@ const voilaUserSchema = new mongoose.Schema ({
   beforeBmi: Number,
   afterBmi: Number,
   beforePics : {front: String , left : String , right: String, back : String},
-  afterPics : {front: String , left : String , right: String, back : String}
+  afterPics : {front: String , left : String , right: String, back : String},
+  publicIds : {id1: String, id2: String, id3: String, id4: String, id5: String, id6: String, id7: String, id8: String}
 });
 
 
@@ -232,8 +232,12 @@ app.post("/register", (req,res) => {
     console.log("Error :", err);
     console.log("Result :", result.url, result.public_id);
 
+   publicIds.push(result.public_id);
    photos.push(result.url);
-   console.log(photos);
+
+
+   console.log("photo link " + photos);
+   console.log("public id " + publicIds);
    console.log("Array size " + photos.length)
 
    if (photos.length === 8) {
@@ -242,7 +246,9 @@ app.post("/register", (req,res) => {
   // Adds uploaded photos to users account in database
      VoilaUser.findOneAndUpdate({username: username},
      { $set: { beforePics : {front : photos[0] , left : photos[2], right : photos[4], back: photos[6]},
-      afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]}}},
+      afterPics : {front : photos[1] , left : photos[3], right : photos[5], back: photos[7]},
+      publicIds : {id1 : publicIds[0], id2 : publicIds[1], id3 : publicIds[2], id4 : publicIds[3],
+                  id5 : publicIds[4], id6 : publicIds[5], id7 : publicIds[6], id8 : publicIds[7]}}},
       function (err,doc) {
         if (err){
           console.log(err);
@@ -251,6 +257,7 @@ app.post("/register", (req,res) => {
           console.log(username + firstName + lastName);
           console.log("update successful!");
           console.log(doc);
+
 
           res.render('postPics', {firstName : firstName,
             username:username,
@@ -262,7 +269,8 @@ app.post("/register", (req,res) => {
             secrets : secrets,
             beforeBmi : Math.round(beforeBmi,2),
             afterBmi: Math.round(afterBmi,2),
-            friendCode:friendCode
+            friendCode:friendCode,
+            publicIds: publicIds
             });
 
         }
@@ -323,7 +331,8 @@ VoilaUser.find({ username : username}, function (err, docs) {
                      afterBmi: Math.round(docs[0].afterBmi,2),
                      height: docs[0].height,
                      secrets: docs[0].secrets,
-                     friendCode:docs[0].friendCode
+                     friendCode:docs[0].friendCode,
+                     publicIds:docs[0].publicIds
                       });
                  }
                  else {
@@ -337,7 +346,8 @@ VoilaUser.find({ username : username}, function (err, docs) {
                                            afterBmi: docs[0].afterBmi,
                                            height: docs[0].height,
                                            secrets: docs[0].secrets,
-                                           friendCode : docs[0].friendCode
+                                           friendCode : docs[0].friendCode,
+                                           publicIds: docs[0].publicIds
                                            });
                }
              }
@@ -404,7 +414,8 @@ app.post('/friendCode', (req,res) => {
     port = 3000;
   }
 
-// RESETTING/DELETING PICTURES!
+// RESETTING/DELETING PICTURES FROM LOGIN
+
   app.post('/loginPost', (req,res) =>  {
 
     var username = req.body.usernameReset;
@@ -417,15 +428,19 @@ app.post('/friendCode', (req,res) => {
          console.log(err);
        }
        else {
+         cloudinary.api.delete_resources(publicIds, function(err,result) {
+           console.log(result,err);
+         });
          res.render('login');
        }
      });
   });
 
+  // RESETTING/DELETING PICTURES FROM Upload POST
   app.post('/postPics', (req,res) =>  {
 
-    var username = req.body.usernameReset;
 
+    var username = req.body.usernameReset;
     VoilaUser.findOneAndUpdate({username: username},
     { $set: { beforePics : {front : " " , left : " ", right : " ", back: " "},
      afterPics : {front : " " , left : " ", right : " ", back: " "}}},
@@ -434,6 +449,9 @@ app.post('/friendCode', (req,res) => {
          console.log(err);
        }
        else {
+         cloudinary.api.delete_resources(publicIds, function(err,result) {
+           console.log(result,err);
+         });
          res.render('login');
        }
      });
