@@ -230,7 +230,7 @@ app.post("/register", (req,res) => {
   cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey"}, function(err,result) {
     var cloudPhotos = [];
     console.log("Error :", err);
-    console.log("Result :", result.url);
+    console.log("Result :", result.url, result.public_id);
 
    photos.push(result.url);
    console.log(photos);
@@ -251,25 +251,29 @@ app.post("/register", (req,res) => {
           console.log(username + firstName + lastName);
           console.log("update successful!");
           console.log(doc);
+
+          res.render('postPics', {firstName : firstName,
+            username:username,
+            lastName: lastName,
+            height : height,
+            photos:photos,
+            beforeWeight : beforeWeight,
+            afterWeight : afterWeight,
+            secrets : secrets,
+            beforeBmi : Math.round(beforeBmi,2),
+            afterBmi: Math.round(afterBmi,2),
+            friendCode:friendCode
+            });
+
         }
       });
 
-
-     res.render('postPics', {firstName : firstName,
-       username:username,
-       lastName: lastName,
-       height : height,
-       photos:photos,
-       beforeWeight : beforeWeight,
-       afterWeight : afterWeight,
-       secrets : secrets,
-       beforeBmi : Math.round(beforeBmi,2),
-       afterBmi: Math.round(afterBmi,2),
-       friendCode:friendCode
-       });
    }
 
+
+
   });
+
   });
 
 
@@ -332,7 +336,8 @@ VoilaUser.find({ username : username}, function (err, docs) {
                                            beforeBmi: docs[0].beforeBmi,
                                            afterBmi: docs[0].afterBmi,
                                            height: docs[0].height,
-                                           secrets: docs[0].secrets
+                                           secrets: docs[0].secrets,
+                                           friendCode : docs[0].friendCode
                                            });
                }
              }
@@ -346,7 +351,7 @@ VoilaUser.find({ username : username}, function (err, docs) {
 });
 
 
-
+// POSTING TO FRIEND CODE PAGE
 app.post('/friendCode', (req,res) => {
 
   var friendUsername = req.body.friendUsername;
@@ -399,6 +404,7 @@ app.post('/friendCode', (req,res) => {
     port = 3000;
   }
 
+// RESETTING/DELETING PICTURES!
   app.post('/loginPost', (req,res) =>  {
 
     var username = req.body.usernameReset;

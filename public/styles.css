@@ -39,9 +39,15 @@ display: inline-block;
 
 .code-to-share {
   color: yellow;
-  font-size: 80px;
+  font-size: 20px;
   display: none;
   position: absolute;
+}
+
+.code-button{
+  position: absolute;
+  top : 0.5%;
+  left: 8%;
 }
 
 
@@ -85,7 +91,7 @@ display: inline-block;
   font-size: 40px;
    position: relative;
    top: 4.5%;
-   left : 23%;;
+   left : 27%;;
    color : yellow;
 }
 
@@ -182,9 +188,24 @@ padding-left: 115px;
 padding-right: 180px;
 }
 
+.post-buttons{
+  position: relative;
+  top:50%;
+  left: 40%;
+  padding-bottom: 70px;
+}
+
 .height-box{
   position: relative;
   bottom:10px;
+  width: 80px;
+}
+
+.height-label{
+  color:yellow;
+  position:absolute;
+  top: 50%;
+  right: 20%;
 }
 
 .register-title{
@@ -237,14 +258,19 @@ h2 {
 .index-buttons {
   position: absolute;
   top : 70%;
-  right: 42%;
+  right: 34%;
 }
 
 .index-message{
   position : absolute;
-  top : 40%;
+  top : 30%;
   left: 28%;
   font-family: 'Yanone Kaffeesatz', sans-serif;
+}
+
+.index-details{
+  font-size: 18px;
+  color: white;
 }
 
 .reveal-name{
@@ -273,7 +299,7 @@ h2 {
 
 .info-position{
   position: relative;
-  left : -3.7%;
+  left : -3%;
 }
 
 .logo {

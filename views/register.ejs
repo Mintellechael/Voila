@@ -8,22 +8,23 @@
 
         <form  action='/register' id="login" method="post">
 
-            <input  placeholder="username" id="validateUsername" type='text' name='username' required/>
+            <input  placeholder="Username" id="validateUsername" type='text' name='username' required/>
 
-            <input placeholder="password" type='text' name='password' required/> <br /> <br />
+            <input placeholder="Password" type='text' name='password' required/> <br /> <br />
 
-            <input placeholder="first name" type='text' name='firstName' required/>
+            <input placeholder="First Name" type='text' name='firstName' required/>
 
-            <input placeholder="last name" type='text' name='lastName' required/>  <br /> <br />
+            <input placeholder="Last Name" type='text' name='lastName' required/>  <br /> <br />
 
-            <input placeholder="before weight"type='number' name='beforeWeight' required/>
+            <input placeholder="Before Weight"type='number' name='beforeWeight' required/>
 
-            <input placeholder="after weight" type='number' name='afterWeight'required/> <br /> <br />
+            <input placeholder="After Weight" type='number' name='afterWeight'required/> <br /> <br />
 
 
-            <textarea placeholder="Whoa! How'd you make that transformation?" name="secrets" form="login"></textarea>
-            <input placeholder="height : (feet) "  class="height-box" type='number' name='feet'/>
-            <input placeholder="height : (inches) " class="height-box" type='number' name='inches'/> <br /> <br />
+            <textarea placeholder="How'd you make that transformation?" name="secrets" form="login"></textarea>
+            <label class="height-label" for="height">Height</label>
+            <input placeholder="ft"  class="height-box" type='number' name='feet'/>
+            <input placeholder="in" class="height-box" type='number' name='inches'/> <br /> <br />
 
             <input id="registerButton" class="register-button btn btn-warning btn-xlarge"type="submit" value="submit" />
 

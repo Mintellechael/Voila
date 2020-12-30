@@ -49,7 +49,7 @@
       </div>
 
 
-      
+
         <div class="container-fluid b1">
 
             <img class="bf front" src= "<%= photos[0] %>" alt="Before Front Picture" />
@@ -72,10 +72,18 @@
 
         </div>
 
-        <form action="/postPics" id="resetButton" method="post" >
-          <input type="hidden" name="usernameReset" value="<%= username %>" />
-          <button type="Submit" id="reset-button" class="btn btn-warning btn-xlarge" value="submit">Reset</button>
-        </form>
+        <div class = "post-buttons">
+           <form action="/loginPost" id="resetButton" method="post" >
+             <input type="hidden" name="usernameReset" value="<%= username %>" />
+             <button type="Submit" id="reset-button" class="btn btn-warning btn-xlarge" value="submit">Reset</button>
+           </form>
+
+           <button id="code-button" class="code-button btn btn-warning btn-xlarge" value="submit">Reveal Friend Code</button>
+           <p class="code-to-share">
+             copy & share with friends! : <%= friendCode %>
+           </p>
+
+           </div>
 
     </div>
 
