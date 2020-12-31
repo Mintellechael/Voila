@@ -292,15 +292,26 @@ var username = req.body.username;
 var password = req.body.password;
 var friendCode = req.body.friendCode;
 
+console.log("user input = " + username);
+
 
 // Check Database To See If User Exists
 VoilaUser.find({ username : username}, function (err, docs) {
 
-     if (err) {
+     if (err || docs === []) {
      console.log(err)
+      }
+
+     if (!docs.length) {
+       var error =  "user does not exist!";
+       res.render('loginError', {error:error});
+       console.log("Password is incorrect!!!");
+       console.log(err)
      }
 
-     else if (docs[0].username === username) {
+
+
+     else if (docs[0].username === username && docs[0].username != undefined ) {
            if (validatePassword(password,docs[0].salt) === docs[0].password) {
                  if (docs[0].beforePics.front != undefined && docs[0].beforePics.front != " ") {
                    var beforeFront = docs[0].beforePics.front ;
@@ -352,7 +363,7 @@ VoilaUser.find({ username : username}, function (err, docs) {
                }
              }
      else {
-       var error =  "username or password is incorrect";
+       var error =  "password is incorrect";
        res.render('loginError', {error:error});
        console.log("Password is incorrect!!!");
      }
