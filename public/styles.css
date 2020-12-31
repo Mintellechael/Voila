@@ -10,11 +10,11 @@ font-family: 'Lobster', cursive;
 display: inline-block;
 }
 
-.content-wrapper {
+/* .content-wrapper {
   margin-right: auto;
   margin-left: auto;
   max-width: 960px;
-}
+} */
 
 
 @keyframes shake {
