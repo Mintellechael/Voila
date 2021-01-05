@@ -408,7 +408,7 @@ app.post('/friendCode', (req,res) => {
                         });
                    }
                    else {
-                      console.log("shit aint workin fam");
+                      console.log("unsuccessful");
                    }
                }
        else {
@@ -420,10 +420,7 @@ app.post('/friendCode', (req,res) => {
      });
   });
 
-  let port = process.env.PORT;
-  if (port == null || port == "") {
-    port = 3000;
-  }
+
 
 // RESETTING/DELETING PICTURES FROM LOGIN
 
@@ -469,6 +466,12 @@ app.post('/friendCode', (req,res) => {
   });
 
 
+
+// SERVER CONNECTIVITY
+  let port = process.env.PORT;
+  if (port == null || port == "") {
+    port = 3000;
+  }
 
 app.listen(port,() => {
   console.log("UP AND RUNNINNNN!");
