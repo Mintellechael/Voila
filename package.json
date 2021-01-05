@@ -2,7 +2,7 @@
   "name": "voila",
   "version": "1.0.0",
   "description": "",
-  "main": "model+controller/app.js",
+  "main": "app.js",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
