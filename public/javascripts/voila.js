@@ -5,7 +5,11 @@ var picCount = 0;
 
 $("#submitButton").click(function() {
 
-
+  console.log($("#uploadedFile")[0].files[0].size);
+  if ($("#uploadedFile")[0].files[0].size === 0) {
+    event.preventDefault();
+  }
+  else {
 
   picCount ++;
   var newCount = picCount;
@@ -66,7 +70,9 @@ else {
 $(".upload-prompt").html(prompt);
 
 }
+}
 });
+
 
 $("#resetButton").click(function() {
   event.preventDefault()
@@ -78,6 +84,7 @@ $("#resetButton").click(function() {
     $("#resetButton").submit();
   }
 });
+
 
 
 
