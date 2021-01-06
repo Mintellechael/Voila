@@ -122,6 +122,10 @@ app.get("/",(req,res) => {
   res.render('index');
 });
 
+app.get("/uploadError", (req,res) => {
+  res.render('uploadError');
+});
+
 // LOGIN PAGE
 
 app.get("/login",(req,res) => {
@@ -228,6 +232,12 @@ app.post("/register", (req,res) => {
   console.log(file);
 
   cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey"}, function(err,result) {
+  if (!result) {
+    console.log("brokennnnnnn");
+    res.redirect("uploadError");
+  }
+
+  else {
     var cloudPhotos = [];
     console.log("Error :", err);
     console.log("Result :", result.url, result.public_id);
@@ -277,9 +287,7 @@ app.post("/register", (req,res) => {
       });
 
    }
-
-
-
+ }
   });
 
   });

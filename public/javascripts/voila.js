@@ -6,6 +6,7 @@ var picCount = 0;
 $("#submitButton").click(function() {
 
   console.log($("#uploadedFile")[0].files[0].size);
+  console.log("LOOK : " + $("#uploadedFile")[0].value.length);
   if ($("#uploadedFile")[0].files[0].size === 0) {
     event.preventDefault();
   }
