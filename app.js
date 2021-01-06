@@ -233,12 +233,10 @@ app.post("/register", (req,res) => {
 
   cloudinary.uploader.unsigned_upload(file.tempFilePath, "ar2yg47b" , {cloud_name : "hr2frvpey"}, function(err,result) {
   if (!result) {
-    console.log("brokennnnnnn");
     res.redirect("uploadError");
   }
 
   else {
-    var cloudPhotos = [];
     console.log("Error :", err);
     console.log("Result :", result.url, result.public_id);
 
@@ -251,7 +249,6 @@ app.post("/register", (req,res) => {
    console.log("Array size " + photos.length)
 
    if (photos.length === 8) {
-
 
   // Adds uploaded photos to users account in database
      VoilaUser.findOneAndUpdate({username: username},
@@ -283,13 +280,12 @@ app.post("/register", (req,res) => {
             publicIds: publicIds
             });
 
+            photos = [];
         }
       });
-
    }
  }
   });
-
   });
 
 
@@ -428,10 +424,6 @@ app.post('/friendCode', (req,res) => {
      });
   });
 
-  let port = process.env.PORT;
-  if (port == null || port == "") {
-    port = 3000;
-  }
 
 // RESETTING/DELETING PICTURES FROM LOGIN
 
@@ -477,7 +469,12 @@ app.post('/friendCode', (req,res) => {
   });
 
 
+  let port = process.env.PORT;
+  if (port == null || port == "") {
+    port = 3000;
+  }
 
-app.listen(port,() => {
+
+var server = app.listen(port,() => {
   console.log("UP AND RUNNINNNN!");
 });
