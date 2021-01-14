@@ -466,12 +466,11 @@ app.post('/friendCode', (req,res) => {
          // for (m=0; m < publicIds.length; m++) {
          // cloudinary.uploader.destroy(publicIds[m], function(err,result) {
          // console.log(result,err);
-       });
-         }
+      }
          res.render('login');
-       }
+       });
      });
-  });
+
 
 
   let port = process.env.PORT;
