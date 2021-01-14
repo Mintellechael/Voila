@@ -460,12 +460,12 @@ app.post('/friendCode', (req,res) => {
          console.log(err);
        }
        else {
-         // This cannot work from client side because of security issues on cloud side
+         // These api calls cannot work from client side because of security issues on cloud side ("must supply api key")
          // cloudinary.api.delete_resources(publicIds, function(err,result) {
          //   console.log(result,err);
-         for (m=0; m < publicIds.length; m++) {
-         cloudinary.uploader.destroy(publicIds[m], function(err,result) {
-         console.log(result,err);
+         // for (m=0; m < publicIds.length; m++) {
+         // cloudinary.uploader.destroy(publicIds[m], function(err,result) {
+         // console.log(result,err);
        });
          }
          res.render('login');
