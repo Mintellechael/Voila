@@ -439,9 +439,9 @@ app.post('/friendCode', (req,res) => {
          console.log(err);
        }
        else {
-         cloudinary.api.delete_resources(publicIds, function(err,result) {
-           console.log(result,err);
-         });
+         // cloudinary.api.delete_resources(publicIds, function(err,result) {
+         //   console.log(result,err);
+         // });
          res.render('login');
        }
      });
@@ -466,8 +466,9 @@ app.post('/friendCode', (req,res) => {
          // for (m=0; m < publicIds.length; m++) {
          // cloudinary.uploader.destroy(publicIds[m], function(err,result) {
          // console.log(result,err);
-      }
          res.render('login');
+      }
+
        });
      });
 
